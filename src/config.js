@@ -1,3 +1,12 @@
+import background_videos from './background_videos.js';
+import background_audios from './background_audios.js';
+
+// random video and audio background
+const random_background_video =
+  background_videos[Math.floor(Math.random() * background_videos.length)];
+const random_background_audio =
+  background_audios[Math.floor(Math.random() * background_audios.length)];
+
 const config = {
   ai: {
     ai_similarity_enabled: false,
@@ -48,14 +57,8 @@ const config = {
   },
 
   background: {
-    video: {
-      url: 'https://www.youtube.com/watch?v=vw5L4xCPy9Q',
-      filename: 'bike-parkour-gta.mp4',
-    },
-    audio: {
-      url: 'https://www.youtube.com/watch?v=EZE8JagnBI8',
-      filename: 'chill-summer.mp3',
-    },
+    video: random_background_video,
+    audio: random_background_audio,
   },
 };
 

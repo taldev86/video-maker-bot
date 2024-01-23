@@ -6,8 +6,6 @@ import { TrendApiWrapper } from './api/api_wrapper.js';
 import { AWSPolly } from './tts/aws_polly.js';
 import { addVideo } from './utils/db.js';
 
-import background_videos from './background_videos.js'
-import background_audios from './background_audios.js'
 import settings from './config.js';
 
 import { RedditScreenShot } from './screenshot_downloaders/index.js';
@@ -21,12 +19,6 @@ await Actor.init();
 
 const input = await Actor.getInput();
 log.info('Input:', input);
-
-// random video and audio background
-const random_background_video = background_videos[Math.floor(Math.random() * background_videos.length)];
-const random_background_audio = background_audios[Math.floor(Math.random() * background_audios.length)];
-settings.background.video = random_background_video;
-settings.background.audio = random_background_audio;
 
 // 1 get hot content from subreddit
 const redditApi = new RedditApi();
