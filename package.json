@@ -9,7 +9,7 @@
     "crawlee": "^3.5.4",
     "fluent-ffmpeg": "^2.1.2",
     "lowdb": "^7.0.1",
-    "puppeteer": "^21.7.0",
+    "puppeteer": "*",
     "snoowrap": "^1.23.0",
     "user-agents": "^1.1.87",
     "winston": "^3.11.0",
@@ -21,11 +21,12 @@
     "eslint": "^8.50.0"
   },
   "scripts": {
+    "prestart": "rm -rf ./storage",
     "start": "node src/main.js",
     "predev": "rm -rf ./storage",
-    "dev": "node --env-file=.env ./src/main.js",
+    "dev": " env-cmd -f .env node --inspect src/main.js",
     "pretest": "rm -rf ./storage",
-    "test": "node --env-file=.env ./src/screenshot_downloaders/test_crawler.js"
+    "test": "env-cmd -f .env node ./src/screenshot_downloaders/test_crawler.js"
   },
   "author": "It's not you it's me",
   "license": "ISC",

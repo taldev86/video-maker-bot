@@ -31,7 +31,10 @@ export class RedditApi {
     } else if (settings.ai.ai_similarity_enabled) {
       throw new Error('Not implemented');
     } else if (settings.reddit.thread.time_filter) {
-      console.log("settings.reddit.thread.time_filter", settings.reddit.thread.time_filter);
+      console.log(
+        'settings.reddit.thread.time_filter',
+        settings.reddit.thread.time_filter
+      );
       const threads = await subreddit.getTop({
         time: settings.reddit.thread.time_filter,
         limit: 25,
@@ -42,6 +45,7 @@ export class RedditApi {
         subredditName: subRedditName,
       });
     } else {
+      // https://www.reddit.com/dev/api/#GET_top
       const threads = await subreddit.getHot({
         limit: 25,
       });

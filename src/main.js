@@ -1,5 +1,4 @@
 import { Actor, log } from 'apify';
-import { sleep } from 'crawlee';
 
 import { RedditApi } from './api/reddit.js';
 import { TTSEngineWrapper } from './tts/engine_wrapper.js';

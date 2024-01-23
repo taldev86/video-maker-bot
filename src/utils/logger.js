@@ -1,16 +1,8 @@
 import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
 
 import util from 'util';
 
-const combineMessageAndSplat = () => ({
-  transform(info) {
-    const { [Symbol.for('splat')]: args = [], message } = info;
-    // eslint-disable-next-line no-param-reassign
-    info.message = util.format(message, ...args);
-    return info;
-  },
-});
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 const transport = new DailyRotateFile({
   filename: 'application-%DATE%.log',
@@ -20,6 +12,15 @@ const transport = new DailyRotateFile({
   maxSize: '20m',
   maxFiles: '14d',
   level: 'debug',
+});
+
+const combineMessageAndSplat = () => ({
+  transform(info) {
+    const { [Symbol.for('splat')]: args = [], message } = info;
+    // eslint-disable-next-line no-param-reassign
+    info.message = util.format(message, ...args);
+    return info;
+  },
 });
 
 const options = (label) => ({

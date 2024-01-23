@@ -11,4 +11,7 @@ node_modules
 
 # git folder
 .git
-# .env
+.env
+assets
+logs
+results
