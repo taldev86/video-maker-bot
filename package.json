@@ -32,6 +32,6 @@
   "author": "It's not you it's me",
   "license": "ISC",
   "engines": {
-    "node": ">=20.6.0"
+    "node": ">=18"
   }
 }

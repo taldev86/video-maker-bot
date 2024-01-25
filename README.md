@@ -11,3 +11,4 @@
 
 docker build --platform linux/amd64 -t test-bot .
 docker run -it --rm -p 8080:8080 test-bot
+docker run test-bot

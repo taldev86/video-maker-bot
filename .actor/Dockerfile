@@ -3,6 +3,16 @@
 # You can also use any other image from Docker Hub.
 FROM apify/actor-node-puppeteer-chrome:20
 
+USER root
+
+# Install ffmpeg
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+USER myuser
+
 # Copy just package.json and package-lock.json
 # to speed up the build using Docker layer cache.
 COPY --chown=myuser package*.json ./
