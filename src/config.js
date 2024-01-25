@@ -51,8 +51,7 @@ const config = {
       enabled: true,
       text: 'Video created by u/BinhBui',
       color: '#ffffff',
-      size: 20,
-      position: 'bottom-right',
+      size: 30,
     },
   },
 

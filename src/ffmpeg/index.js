@@ -73,31 +73,43 @@ const prepare_background = async ({
   output_file_path,
   width,
   height,
+  settings,
 }) => {
   return new Promise((resolve, reject) => {
-    console.log('======Starting background video with no audio======');
-    console.log(
-      'background_file_path',
-      background_file_path,
-      'width',
-      width,
-      'height',
-      height
-    );
-    ffmpeg(background_file_path)
-      // .filter("crop", f"ih*({W}/{H})", "ih")
-      .videoFilter({
-        filter: 'crop',
-        options: `ih*(${width}/${height}):ih`,
-      })
-      // scale to width and height
-      //   .videoFilter(`scale=${width}:${height}`)
+    const {
+      wartermark: { enabled, text, color, size },
+    } = settings;
+
+    const ffmpegCmd = ffmpeg(background_file_path);
+
+    // .filter("crop", f"ih*({W}/{H})", "ih")
+    ffmpegCmd.videoFilter({
+      filter: 'crop',
+      options: `ih*(${width}/${height}):ih`,
+    });
+    // scale to width and height
+    ffmpegCmd.videoFilter(`scale=${width}:${height}`);
+
+    // draw text on the video, on bottom of the screen
+    if (enabled && text) {
+      ffmpegCmd.videoFilter(
+        `drawtext=fontfile=fonts/Roboto-Regular.ttf:fontsize=${size}:fontcolor=${color}:x=(w-text_w)/2:y=main_h-30:text='${text}'`
+      );
+    }
+
+    ffmpegCmd
       .on('start', (cmd) => {
         console.log('======Starting background video with no audio======');
       })
       .on('end', () => {
         console.log('======Finished building background video======');
         resolve(output_file_path);
+      })
+      .on('progress', (progress) => {
+        const { timemark, currentKbps, targetSize } = progress;
+        console.log(
+          `Processing: ${timemark} ${currentKbps} ${targetSize} ${output_file_path}`
+        );
       })
       .on('error', (err) => reject(err))
       .save(output_file_path);
@@ -216,51 +228,6 @@ const addImageOverlaysToVideo = async ({
   return ffmpegCommand.complexFilter(complexFilters);
 };
 
-const addWatermarkToVideo = async ({
-  inputVideoPath,
-  outputVideoPath,
-  settings,
-}) => {
-  const {
-    resolution_height,
-    resolution_width,
-    wartermark: { enabled, text, color, size },
-  } = settings;
-
-  const ffmpegCommand = ffmpeg(inputVideoPath);
-
-  // draw text on the video, on bottom of the screen
-  if (enabled && text) {
-    ffmpegCommand.videoFilter(
-      `drawtext=fontfile=fonts/Roboto-Regular.ttf:fontsize=${size}:fontcolor=${color}:x=(w-text_w)/2:y=main_h-30:text='${text}'`
-    );
-  }
-
-  // scale to width and height
-  ffmpegCommand.videoFilter(`scale=${resolution_width}:${resolution_height}`);
-
-  return new Promise((resolve, reject) => {
-    ffmpegCommand
-      .on('end', () => {
-        console.log('======Finished adding watermark to video======');
-        resolve(outputVideoPath);
-      })
-      .on('progress', (progress) => {
-        const { timemark, currentKbps, targetSize } = progress;
-        console.log(
-          `Processing: ${timemark} ${currentKbps} ${targetSize} ${outputVideoPath}`
-        );
-      })
-      .on('start', (cmd) => {
-        console.log('======Starting adding watermark to video======');
-      })
-      .on('error', (err) => {
-        reject(err);
-      })
-      .save(outputVideoPath);
-  });
-};
-
 /**
  * Gathers audio clips, gathers all screenshots, stitches them together and saves the final video to assets/temp
  */
@@ -284,6 +251,7 @@ export const makeFinalVideo = async ({
     output_file_path: `assets/temp/${content.provider}/${content.id}/background_no_audio.mp4`,
     width: resolution_width,
     height: resolution_height,
+    settings,
   });
 
   // create a audio file from comments
@@ -297,12 +265,6 @@ export const makeFinalVideo = async ({
     background_volume: background_volume,
   });
 
-  console.log(
-    'background_video_final_path',
-    background_video_final_path,
-    'background_audio_final_path',
-    background_audio_final_path
-  );
   // make a final video
   const resultPath = './results';
 
@@ -311,11 +273,13 @@ export const makeFinalVideo = async ({
     fs.mkdirSync(resultPath);
   }
 
-  // 45% of the screen
-  const screenshot_width = Math.floor((resolution_width * 45) / 100);
+  // 90% of the screen
+  const screenshot_width = Math.floor((resolution_width * 90) / 100);
 
   const buildFinalVideo = async () => {
     return new Promise(async (resolve, reject) => {
+      // add image overlays
+
       const imageOverlayInfoList = [];
       // add title image overlay
       let currentTime = 0;
@@ -340,8 +304,7 @@ export const makeFinalVideo = async ({
         currentTime += length;
       });
 
-      // add image overlays
-      const finaleVideoPath = `${resultPath}/${content.id}_video.mp4`;
+      const finaleVideoPath = `${resultPath}/${content.id}.mp4`;
       const ffmpegCommand = await addImageOverlaysToVideo({
         inputVideoPath: background_video_final_path,
         imageOverlayInfoList: imageOverlayInfoList,
@@ -349,7 +312,6 @@ export const makeFinalVideo = async ({
 
       // add audio
       ffmpegCommand.input(background_audio_final_path);
-
       ffmpegCommand
         .on('start', (cmd) => {
           console.log('======-o-======');
@@ -370,10 +332,5 @@ export const makeFinalVideo = async ({
 
   const finalVideoPath = await buildFinalVideo();
 
-  // build video with watermark, and save to assets/temp
-  await addWatermarkToVideo({
-    inputVideoPath: finalVideoPath,
-    outputVideoPath: `${resultPath}/${content.id}_video_with_watermark.mp4`,
-    settings,
-  });
+  return finalVideoPath;
 };
