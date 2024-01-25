@@ -310,8 +310,10 @@ export const makeFinalVideo = async ({
         imageOverlayInfoList: imageOverlayInfoList,
       });
 
-      // add audio
       ffmpegCommand.input(background_audio_final_path);
+
+      // create a stream to write to the file
+    //   const outputStream = fs.createWriteStream(finaleVideoPath);
       ffmpegCommand
         .on('start', (cmd) => {
           console.log('======-o-======');
@@ -326,6 +328,13 @@ export const makeFinalVideo = async ({
             `Processing: ${timemark} ${currentKbps} ${targetSize} ${finaleVideoPath}`
           );
         })
+        .audioCodec('aac')
+        .videoCodec('libx264')
+        .format('mp4')
+        // this is to make the video streamable
+        // .outputOptions(['-movflags frag_keyframe+empty_moov'])
+        // .output(outputStream, { end: true })
+        // .run();
         .save(finaleVideoPath);
     });
   };

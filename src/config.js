@@ -39,6 +39,15 @@ const config = {
     },
   },
 
+  s3: {
+    creds: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      region: process.env.AWS_REGION,
+    },
+    bucketName: process.env.AWS_S3_BUCKET,
+  },
+
   settings: {
     // if set it true, your reddit account need accept in browser in first time
     allow_nsfw: true, // allow over 18 content

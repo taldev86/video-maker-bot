@@ -13,7 +13,8 @@
     "REDDIT_PASSWORD": "qb!3w%d!h87atDJ",
     "AWS_ACCESS_KEY_ID": "AKIAW3MEAPLOIUF6YPJN",
     "AWS_SECRET_ACCESS_KEY": "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",
-    "AWS_REGION": "us-east-1"
+    "AWS_REGION": "us-east-1",
+    "AWS_S3_BUCKET": "socialmediascraper-bot"
   },
   "input": "./input_schema.json",
   "dockerfile": "./Dockerfile",

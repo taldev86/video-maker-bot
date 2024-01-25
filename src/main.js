@@ -1,10 +1,12 @@
 import { Actor, log } from 'apify';
+import { readFile } from 'fs/promises';
 
 import { RedditApi } from './api/reddit.js';
 import { TTSEngineWrapper } from './tts/engine_wrapper.js';
 import { TrendApiWrapper } from './api/api_wrapper.js';
 import { AWSPolly } from './tts/aws_polly.js';
 import { addVideo } from './utils/db.js';
+import { uploadFileToS3, getSignedDownloadUrl } from './storage/s3.js';
 
 import settings from './config.js';
 
@@ -87,7 +89,7 @@ const background_audio_path = await chop_background({
 // }
 
 // make a final video
-await makeFinalVideo({
+const finalPath = await makeFinalVideo({
   bg_config: {
     background_video_path,
     background_audio_path,
@@ -98,9 +100,25 @@ await makeFinalVideo({
   settings: settings.settings,
 });
 
+// upload to s3
+const fileContent = await readFile(finalPath);
+const s3Key = `videos/${content.provider}/${Date.now()}_${content.id}.mp4`;
+await uploadFileToS3({
+  key: s3Key,
+  file: fileContent,
+  bucketName: settings.s3.bucketName,
+});
+
+// get  signed url of video on s3
+const signedUrl = await getSignedDownloadUrl({
+  bucketName: settings.s3.bucketName,
+  key: s3Key,
+});
+
 // save content to db
 await addVideo({
   ...content,
+  video_url: signedUrl,
   updated_at: new Date().toISOString(),
 });
 
