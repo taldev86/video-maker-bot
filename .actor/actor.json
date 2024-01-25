@@ -1,12 +1,24 @@
 {
-	"actorSpecification": 1,
-	"name": "twitter-video-maker-bot-js",
-	"title": "Project Puppeteer Crawler JavaScript",
-	"description": "Crawlee and Puppeteer project in JavaScript.",
-	"version": "0.0",
-	"meta": {
-		"templateId": "js-crawlee-puppeteer-chrome"
-	},
-	"input": "./input_schema.json",
-	"dockerfile": "./Dockerfile"
+  "actorSpecification": 1,
+  "name": "video-maker-bot",
+  "title": "Project Puppeteer Crawler JavaScript",
+  "description": "Crawlee and Puppeteer project in JavaScript.",
+  "version": "0.0",
+  "buildTag": "latest",
+  "environmentVariables": {
+    "REDDIT_USER_AGENT": "javascript:com.codewithyou.video-maker-bot:v1.0.0 (by /u/bvbinh)",
+    "REDDIT_CLIENT_ID": "iFtWhze74oNM051bBbvy0A",
+    "REDDIT_CLIENT_SECRET": "IdErcLf8VaeHSifB5uPa_iqIjrKrEQ",
+    "REDDIT_USERNAME": "bvbinh",
+    "REDDIT_PASSWORD": "qb!3w%d!h87atDJ",
+    "AWS_ACCESS_KEY_ID": "AKIAW3MEAPLOIUF6YPJN",
+    "AWS_SECRET_ACCESS_KEY": "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",
+    "AWS_REGION": "us-east-1"
+  },
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "./ACTOR.md",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  }
 }

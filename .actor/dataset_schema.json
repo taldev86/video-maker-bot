@@ -1,0 +1,54 @@
+{
+  "actorSpecification": 1,
+  "title": "Zappos.com Dataset",
+  "description": "",
+  "views": {
+    "products": {
+      "title": "Overview",
+      "description": "It can take about one minute until the first results are available.",
+      "transformation": {
+        "fields": [
+          "imgUrl",
+          "brand",
+          "name",
+          "SKU",
+          "inStock",
+          "onSale",
+          "price",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "imgUrl": {
+            "label": "Product image",
+            "format": "image"
+          },
+          "url": {
+            "label": "Link",
+            "format": "link"
+          },
+          "brand": {
+            "format": "text"
+          },
+          "name": {
+            "format": "text"
+          },
+          "SKU": {
+            "format": "text"
+          },
+          "inStock": {
+            "format": "boolean"
+          },
+          "onSale": {
+            "format": "boolean"
+          },
+          "price": {
+            "format": "text"
+          }
+        }
+      }
+    }
+  }
+}
