@@ -1,8 +1,52 @@
 {
-  "title": "PlaywrightCrawler Template",
+  "title": "Video bot marker configuration",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
+    "tts": {
+      "title": "Text-to-speech configuration",
+      "type": "object",
+      "description": "Enter the text-to-speech configuration.",
+      "prefill": {
+        "random_voice": true,
+        "aws_polly_voice": "Matthew"
+      },
+      "editor": "json"
+    },
+    "reddit": {
+      "title": "Reddit thread configuration",
+      "type": "object",
+      "description": "Enter the reddit thread you want to crawl.",
+      "prefill": {
+        "theme": "dark",
+        "subreddit": "CryptoCurrency",
+        "min_comments": 20,
+        "min_comment_length": 10,
+        "max_comment_length": 500,
+        "time_filter": "day",
+        "post_id": ""
+      },
+      "editor": "json"
+    },
+    "settings": {
+      "title": "Crawler settings",
+      "type": "object",
+      "description": "Enter the crawler settings.",
+      "prefill": {
+        "allow_nsfw": true,
+        "resolution_width": 1080,
+        "resolution_height": 1920,
+        "opacity": 0.9,
+        "background_volume": 0,
+        "wartermark": {
+          "enabled": true,
+          "text": "Video created by u/BinhBui",
+          "color": "#ffffff",
+          "size": 30
+        }
+      },
+      "editor": "json"
+    },
     "accessToken": {
       "title": "Facebook long-lived access token",
       "type": "string",

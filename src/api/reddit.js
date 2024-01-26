@@ -20,10 +20,10 @@ export class RedditApi {
   }
 
   async parse() {
-    const postId = settings.reddit.thread.post_id;
+    const postId = settings.reddit.post_id;
     logger.info('Getting subreddit threads...', postId);
 
-    const subRedditName = settings.reddit.thread.subreddit || 'AskReddit';
+    const subRedditName = settings.reddit.subreddit || 'AskReddit';
     const subreddit = await r.getSubreddit(subRedditName);
 
     let submission = null;
@@ -31,13 +31,13 @@ export class RedditApi {
       submission = await r.getSubmission(postId).refresh();
     } else if (settings.ai.ai_similarity_enabled) {
       throw new Error('Not implemented');
-    } else if (settings.reddit.thread.time_filter) {
+    } else if (settings.reddit.time_filter) {
       console.log(
-        'settings.reddit.thread.time_filter',
-        settings.reddit.thread.time_filter
+        'settings.reddit.time_filter',
+        settings.reddit.time_filter
       );
       const threads = await subreddit.getTop({
-        time: settings.reddit.thread.time_filter,
+        time: settings.reddit.time_filter,
         limit: 25,
       });
       submission = await this.getSubredditUndone({
@@ -86,12 +86,12 @@ export class RedditApi {
           return false;
         }
         // if comment is too short, skip
-        if (comment.body.length < settings.reddit.thread.min_comment_length) {
+        if (comment.body.length < settings.reddit.min_comment_length) {
           return false;
         }
 
         // if comment is too long, skip
-        if (comment.body.length > settings.reddit.thread.max_comment_length) {
+        if (comment.body.length > settings.reddit.max_comment_length) {
           return false;
         }
 
@@ -150,7 +150,7 @@ export class RedditApi {
       }
 
       // min_comments
-      if (s.num_comments < settings.reddit.thread.min_comments) {
+      if (s.num_comments < settings.reddit.min_comments) {
         logger.info(
           `This post does not have enough comments. Skipping... ${s.id}`
         );

@@ -22,6 +22,20 @@ await Actor.init();
 const input = await Actor.getInput();
 log.info('Input:', input);
 
+// update settings by input
+settings.settings = {
+  ...settings.settings,
+  ...input.settings,
+};
+settings.reddit = {
+  ...settings.reddit,
+  ...input.reddit,
+};
+settings.tts = {
+  ...settings.tts,
+  ...input.tts,
+};
+
 const dataset = await Actor.openDataset(
   input.datasetName || 'instagram-reel-publisher'
 );

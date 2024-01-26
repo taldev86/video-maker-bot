@@ -1,7 +1,6 @@
 import ytdl from 'ytdl-core';
 import fs from 'fs';
 import { createLogger } from '../utils/logger.js';
-
 const logger = createLogger('yt-dlp');
 
 let counter = 0;

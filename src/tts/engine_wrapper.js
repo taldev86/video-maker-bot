@@ -24,7 +24,7 @@ export class TTSEngineWrapper {
     this.lastClipLength = 0;
     this.length = 0;
 
-    this.lang = settings.reddit.thread.post_lang;
+    this.lang = settings.reddit.post_lang;
     this.maxLengthInSeconds = DEFAULT_MAX_LENGTH_IN_SECONDS;
   }
 
