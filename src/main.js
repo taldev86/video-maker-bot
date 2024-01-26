@@ -6,6 +6,7 @@ import { TTSEngineWrapper } from './tts/engine_wrapper.js';
 import { TrendApiWrapper } from './api/api_wrapper.js';
 import { AWSPolly } from './tts/aws_polly.js';
 import { uploadFileToS3, getSignedDownloadUrl } from './aws/s3.js';
+import { postInstagramReel } from './instagram.js';
 
 import settings from './config.js';
 
@@ -118,10 +119,28 @@ const signedUrl = await getSignedDownloadUrl({
   key: s3Key,
 });
 
+// post to instagram
+let instagramUrl;
+if (input.instagramPageID && input.accessToken) {
+  log.info('=====Post to instagram=====');
+  const description = `@${content.author} on @reddit\n\n${content.title}\n\n${
+    content.comments.length
+  } comments\n\n${(input.hashtags || '').join(' ')}`;
+  const res = await postInstagramReel({
+    accessToken: input.accessToken,
+    pageId: input.instagramPageID,
+    description,
+    videoUrl: signedUrl,
+  });
+  instagramUrl = res.permalink;
+  log.info('Instagram url:', instagramUrl);
+}
+
 // save content to db
 await dataset.pushData({
   ...content,
   video_url: signedUrl,
+  instagram_url: instagramUrl,
   updated_at: new Date().toISOString(),
 });
 

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const GRAPH_API_VERSION = 'v18.0';
-
 const getStatusOfUpload = async (accessToken, igContainerId) => {
   const response = await axios.get(
     `https://graph.facebook.com/${GRAPH_API_VERSION}/${igContainerId}`,
@@ -148,5 +147,5 @@ export const generateLongLivedAccessToken = async ({
 
   const { data } = res.data;
   const { access_token: nonExpiringToken } = data[0];
-  return nonExpiringToken;
+  return nonExpiringToken
 };
