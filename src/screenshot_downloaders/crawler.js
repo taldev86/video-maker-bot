@@ -62,10 +62,13 @@ export class ScreenShotCrawler {
     this.logger.info(`Creating directory ${this.path}`);
     fs.mkdirSync(this.path, { recursive: true });
     const startUrls = await this.getStartUrls();
-    this.logger.info(`Found ${startUrls.length} start urls`);
+    this.logger.info(`Found ${startUrls.length} start urls`, {
+      startUrls,
+    });
 
     const requestList = await RequestList.open('startUrls', startUrls);
     const userAgent = await fakeUserAgent();
+
     this.requestQueue = await RequestQueue.open(
       `requestQueue-${this.content.id}`
     );

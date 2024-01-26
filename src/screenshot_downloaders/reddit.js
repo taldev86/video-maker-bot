@@ -12,6 +12,7 @@ class RedditScreenShot extends ScreenShotCrawler {
       {
         url: 'https://www.reddit.com/login',
         label: 'login',
+        uniqueKey: `${Date.now()}-login`
       },
     ];
   }
@@ -21,11 +22,16 @@ class RedditScreenShot extends ScreenShotCrawler {
       userData: { label },
     } = request;
 
+    this.logger.info('request handler', {
+      url: request.url,
+      label,
+    });
+
     switch (label) {
       case 'login': {
         this.logger.info('login page', {
-            url: request.url,
-            label,
+          url: request.url,
+          label,
         });
         // set cookies based on settings.theme
         const cookies =
@@ -49,17 +55,19 @@ class RedditScreenShot extends ScreenShotCrawler {
         // after login, we will add more requests to the queue
         // this can re-use same cookies
         this.logger.info('adding more requests to the queue', {
-            url: this.content.url,
+          url: this.content.url,
         });
         await this.requestQueue.addRequest({
           url: this.content.url,
           userData: { label: 'title' },
+          uniqueKey: `${Date.now()}-title`,
         });
 
         this.content.comments.forEach(async (comment, index) => {
           await this.requestQueue.addRequest({
             url: comment.url,
             userData: { label: 'comment', index, commentId: comment.id },
+            uniqueKey: `${Date.now()}-comment-${comment.id}`,
           });
         });
 
@@ -68,7 +76,7 @@ class RedditScreenShot extends ScreenShotCrawler {
       case 'title': {
         // wait for the title to load
         this.logger.info('waiting for title', {
-            url: request.url,
+          url: request.url,
         });
         await page.waitForSelector('[data-test-id="post-content"]');
         const titleElement = await page.$('[data-test-id="post-content"]');
@@ -84,8 +92,8 @@ class RedditScreenShot extends ScreenShotCrawler {
         const commentId = `#t1_${request.userData.commentId}`;
         // wait for the comment to load
         this.logger.info('waiting for comment', {
-            url: request.url,
-            commentId,
+          url: request.url,
+          commentId,
         });
         await page.waitForSelector(commentId);
         const commentElement = await page.$(commentId);

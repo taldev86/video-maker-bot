@@ -127,7 +127,8 @@ export class RedditApi {
   }
 
   async getSubredditUndone({ submissions, times_checked = 0, subredditName }) {
-    const doneVideos = await this.dataset.getData();
+    const store = await this.dataset.getData();
+    const doneVideos = store.items || [];
 
     // filter out videos that have already been done
     const undoneVideos = submissions.filter((submission) => {
