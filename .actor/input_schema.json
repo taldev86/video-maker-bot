@@ -65,14 +65,7 @@
       "type": "array",
       "description": "Hashtags to add to the reels you post to Instagram. Don't forget to add # at the beginning of each tag.",
       "editor": "stringList",
-      "prefill": [
-        "#babybara",
-        "#capybara",
-        "#capybaras",
-        "#capy",
-        "#capybaralove",
-        "#capybaralife"
-      ]
+      "prefill": ["#crypto", "#cryptocurrency"]
     }
   },
   "required": ["accessToken", "instagramPageID", "hashtags"]

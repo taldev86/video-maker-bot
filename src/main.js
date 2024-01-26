@@ -19,10 +19,9 @@ import {
 
 await Actor.init();
 
-const input = await Actor.getInput();
-log.info('Input:', input);
+const input = (await Actor.getInput()) || {};
 
-// update settings by input
+// ===== update settings by input =====
 settings.settings = {
   ...settings.settings,
   ...input.settings,
@@ -147,7 +146,9 @@ if (input.instagramPageID && input.accessToken) {
     videoUrl: signedUrl,
   });
   instagramUrl = res.permalink;
-  log.info('Instagram url:', instagramUrl);
+  log.info('Instagram url:', {
+    instagramUrl,
+  });
 }
 
 // save content to db

@@ -69,6 +69,7 @@ export class RedditApi {
       threadPost: submission.selftext,
       comments: [],
       provider: 'reddit',
+      author: submission.author.name,
     };
 
     // add comments to content
