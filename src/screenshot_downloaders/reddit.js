@@ -23,7 +23,10 @@ class RedditScreenShot extends ScreenShotCrawler {
 
     switch (label) {
       case 'login': {
-        console.log('waiting for login', this.settings.theme);
+        this.logger.info('login page', {
+            url: request.url,
+            label,
+        });
         // set cookies based on settings.theme
         const cookies =
           this.settings.theme === 'dark' ? darkCookies : lightCookies;
@@ -45,7 +48,9 @@ class RedditScreenShot extends ScreenShotCrawler {
 
         // after login, we will add more requests to the queue
         // this can re-use same cookies
-        console.log('adding more requests to the queue', this.content.url);
+        this.logger.info('adding more requests to the queue', {
+            url: this.content.url,
+        });
         await this.requestQueue.addRequest({
           url: this.content.url,
           userData: { label: 'title' },
@@ -62,7 +67,9 @@ class RedditScreenShot extends ScreenShotCrawler {
       }
       case 'title': {
         // wait for the title to load
-        console.log('waiting for title', request.url);
+        this.logger.info('waiting for title', {
+            url: request.url,
+        });
         await page.waitForSelector('[data-test-id="post-content"]');
         const titleElement = await page.$('[data-test-id="post-content"]');
         // screenshot the title
@@ -76,7 +83,10 @@ class RedditScreenShot extends ScreenShotCrawler {
         const index = request.userData.index || 0;
         const commentId = `#t1_${request.userData.commentId}`;
         // wait for the comment to load
-        console.log('waiting for comment', request.url);
+        this.logger.info('waiting for comment', {
+            url: request.url,
+            commentId,
+        });
         await page.waitForSelector(commentId);
         const commentElement = await page.$(commentId);
         await commentElement.screenshot({

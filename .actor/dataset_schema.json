@@ -1,51 +1,24 @@
 {
   "actorSpecification": 1,
-  "title": "Zappos.com Dataset",
+  "title": "Video Maker Bot",
   "description": "",
   "views": {
-    "products": {
-      "title": "Overview",
-      "description": "It can take about one minute until the first results are available.",
+    "videos": {
+      "title": "Videos",
+      "description": "List of videos",
       "transformation": {
-        "fields": [
-          "imgUrl",
-          "brand",
-          "name",
-          "SKU",
-          "inStock",
-          "onSale",
-          "price",
-          "url"
-        ]
+        "fields": ["url", "video_url"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "imgUrl": {
-            "label": "Product image",
-            "format": "image"
-          },
           "url": {
             "label": "Link",
             "format": "link"
           },
-          "brand": {
-            "format": "text"
-          },
-          "name": {
-            "format": "text"
-          },
-          "SKU": {
-            "format": "text"
-          },
-          "inStock": {
-            "format": "boolean"
-          },
-          "onSale": {
-            "format": "boolean"
-          },
-          "price": {
-            "format": "text"
+          "video_url": {
+            "label": "Video",
+            "format": "link"
           }
         }
       }

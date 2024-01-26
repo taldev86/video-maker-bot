@@ -5,8 +5,7 @@ import { RedditApi } from './api/reddit.js';
 import { TTSEngineWrapper } from './tts/engine_wrapper.js';
 import { TrendApiWrapper } from './api/api_wrapper.js';
 import { AWSPolly } from './tts/aws_polly.js';
-import { addVideo } from './utils/db.js';
-import { uploadFileToS3, getSignedDownloadUrl } from './storage/s3.js';
+import { uploadFileToS3, getSignedDownloadUrl } from './aws/s3.js';
 
 import settings from './config.js';
 
@@ -22,8 +21,12 @@ await Actor.init();
 const input = await Actor.getInput();
 log.info('Input:', input);
 
+const dataset = await Actor.openDataset(
+  input.datasetName || 'instagram-reel-publisher'
+);
+
 // 1 get hot content from subreddit
-const redditApi = new RedditApi();
+const redditApi = new RedditApi(dataset);
 const api = new TrendApiWrapper(redditApi);
 let content = await api.run();
 
@@ -116,7 +119,7 @@ const signedUrl = await getSignedDownloadUrl({
 });
 
 // save content to db
-await addVideo({
+await dataset.pushData({
   ...content,
   video_url: signedUrl,
   updated_at: new Date().toISOString(),

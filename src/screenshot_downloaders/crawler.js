@@ -1,4 +1,4 @@
-import { PuppeteerCrawler, RequestList, RequestQueue } from 'crawlee';
+import { PuppeteerCrawler, RequestList, RequestQueue, log } from 'crawlee';
 import fs from 'fs';
 import { fakeUserAgent } from '../utils/helper.js';
 
@@ -45,6 +45,7 @@ export class ScreenShotCrawler {
     this.content = content;
     this.settings = settings;
     this.path = `assets/temp/${content.provider}/${content.id}/png`;
+    this.logger = log;
   }
 
   async requestHandler({ request, response, log, json, enqueueLinks }) {
@@ -56,9 +57,12 @@ export class ScreenShotCrawler {
   }
 
   async start() {
-    fs.mkdirSync(this.path, { recursive: true });
+    this.logger.info(`Starting crawler for ${this.content.id}`);
 
+    this.logger.info(`Creating directory ${this.path}`);
+    fs.mkdirSync(this.path, { recursive: true });
     const startUrls = await this.getStartUrls();
+    this.logger.info(`Found ${startUrls.length} start urls`);
 
     const requestList = await RequestList.open('startUrls', startUrls);
     const userAgent = await fakeUserAgent();
@@ -69,7 +73,7 @@ export class ScreenShotCrawler {
     const width = this.settings.resolution_width - 14;
     const height = this.settings.resolution_height + 4;
     const dsf = Math.floor(width / 600) + 1;
-
+    this.logger.info(`Setting resolution to ${width}x${height}`);
     const crawler = new PuppeteerCrawler({
       requestList,
       requestQueue: this.requestQueue,
@@ -117,11 +121,7 @@ export class ScreenShotCrawler {
     });
 
     await crawler.run();
-
+    this.logger.info(`Finished crawler for ${this.content.id}`);
     return this.content;
-  }
-
-  async getCookies() {
-    throw new Error('Not implemented');
   }
 }

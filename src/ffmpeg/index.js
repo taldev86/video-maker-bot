@@ -53,12 +53,12 @@ export const chop_background = async (settings) => {
       .setStartTime(start_time)
       .setDuration(length_of_clip)
       .on('end', () => resolve(background_file_path))
-      .on('progress', (progress) => {
-        const { timemark, currentKbps, targetSize } = progress;
-        console.log(
-          `Processing: ${timemark} ${currentKbps} ${targetSize} ${background_file_path}`
-        );
-      })
+    //   .on('progress', (progress) => {
+    //     const { timemark, currentKbps, targetSize } = progress;
+    //     console.log(
+    //       `Processing: ${timemark} ${currentKbps} ${targetSize} ${background_file_path}`
+    //     );
+    //   })
       .on('error', (err) => reject(err))
       .save(background_file_path);
   });
@@ -105,12 +105,12 @@ const prepare_background = async ({
         console.log('======Finished building background video======');
         resolve(output_file_path);
       })
-      .on('progress', (progress) => {
-        const { timemark, currentKbps, targetSize } = progress;
-        console.log(
-          `Processing: ${timemark} ${currentKbps} ${targetSize} ${output_file_path}`
-        );
-      })
+    //   .on('progress', (progress) => {
+    //     const { timemark, currentKbps, targetSize } = progress;
+    //     console.log(
+    //       `Processing: ${timemark} ${currentKbps} ${targetSize} ${output_file_path}`
+    //     );
+    //   })
       .on('error', (err) => reject(err))
       .save(output_file_path);
   });
@@ -316,18 +316,18 @@ export const makeFinalVideo = async ({
     //   const outputStream = fs.createWriteStream(finaleVideoPath);
       ffmpegCommand
         .on('start', (cmd) => {
-          console.log('======-o-======');
+          console.log('======Start building final video======');
         })
         .on('end', () => {
-          console.log('======Finished building background video======');
+          console.log('======Finished building final video======');
           resolve(finaleVideoPath);
         })
-        .on('progress', (progress) => {
-          const { timemark, currentKbps, targetSize } = progress;
-          console.log(
-            `Processing: ${timemark} ${currentKbps} ${targetSize} ${finaleVideoPath}`
-          );
-        })
+        // .on('progress', (progress) => {
+        //   const { timemark, currentKbps, targetSize } = progress;
+        //   console.log(
+        //     `Processing: ${timemark} ${currentKbps} ${targetSize} ${finaleVideoPath}`
+        //   );
+        // })
         .audioCodec('aac')
         .videoCodec('libx264')
         .format('mp4')

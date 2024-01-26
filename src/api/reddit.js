@@ -2,7 +2,6 @@ import snoowrap from 'snoowrap';
 
 import settings from '../config.js';
 import logger from '../utils/logger.js';
-import { getVideos } from '../utils/db.js';
 import { sanitizeText } from '../utils/helper.js';
 
 // Create a new snoowrap requester with OAuth credentials.
@@ -16,7 +15,9 @@ const r = new snoowrap({
 
 const VALID_TIME_FILTERS = ['day', 'hour', 'month', 'week', 'year', 'all'];
 export class RedditApi {
-  constructor() {}
+  constructor(dataset) {
+    this.dataset = dataset;
+  }
 
   async parse() {
     const postId = settings.reddit.thread.post_id;
@@ -126,7 +127,7 @@ export class RedditApi {
   }
 
   async getSubredditUndone({ submissions, times_checked = 0, subredditName }) {
-    const doneVideos = await getVideos();
+    const doneVideos = await this.dataset.getData();
 
     // filter out videos that have already been done
     const undoneVideos = submissions.filter((submission) => {
