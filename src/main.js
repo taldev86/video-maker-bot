@@ -34,6 +34,10 @@ settings.tts = {
   ...settings.tts,
   ...input.tts,
 };
+settings.background = {
+  video: input.background_videos || settings.background.video,
+  audio: input.background_audios || settings.background.audio,
+};
 
 const dataset = await Actor.openDataset(
   input.datasetName || 'instagram-reel-publisher'

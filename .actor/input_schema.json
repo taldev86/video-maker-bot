@@ -47,6 +47,32 @@
       },
       "editor": "json"
     },
+    "background_videos": {
+      "title": "Background videos",
+      "type": "array",
+      "description": "Enter the background videos you want to use.",
+      "prefill": [
+        {
+          "url": "https://www.youtube.com/watch?v=Pt5_GSKIWQM",
+          "filename": "minecraft-2.mp4",
+          "author": "Itslpsn"
+        }
+      ],
+      "editor": "json"
+    },
+    "background_audios": {
+      "title": "Background audios",
+      "type": "array",
+      "description": "Enter the background audios you want to use.",
+      "prefill": [
+        {
+          "url": "https://www.youtube.com/watch?v=EZE8JagnBI8",
+          "filename": "chill-summer.mp3",
+          "author": "Mellow Vibes Radio"
+        }
+      ],
+      "editor": "json"
+    },
     "accessToken": {
       "title": "Facebook long-lived access token",
       "type": "string",
