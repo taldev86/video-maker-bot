@@ -7,12 +7,12 @@
   "buildTag": "latest",
   "environmentVariables": {
     "REDDIT_USER_AGENT": "javascript:com.codewithyou.video-maker-bot:v1.0.0 (by /u/bvbinh)",
-    "REDDIT_CLIENT_ID": "iFtWhze74oNM051bBbvy0A",
-    "REDDIT_CLIENT_SECRET": "IdErcLf8VaeHSifB5uPa_iqIjrKrEQ",
-    "REDDIT_USERNAME": "bvbinh",
-    "REDDIT_PASSWORD": "qb!3w%d!h87atDJ",
-    "AWS_ACCESS_KEY_ID": "AKIAW3MEAPLOIUF6YPJN",
-    "AWS_SECRET_ACCESS_KEY": "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",
+    "REDDIT_CLIENT_ID": "xxxxxxxxxxxxxxxxxxxx",
+    "REDDIT_CLIENT_SECRET": "xxxxxxxxxxxxxxxxxxxx",
+    "REDDIT_USERNAME": "xxxxxxxxxxxxxxxxxxxx",
+    "REDDIT_PASSWORD": "xxxxxxxxxxxxxxxxxxxx",
+    "AWS_ACCESS_KEY_ID": "xxxxxxxxxxxxxxxxxxxx",
+    "AWS_SECRET_ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "AWS_REGION": "us-east-1",
     "AWS_S3_BUCKET": "socialmediascraper-bot"
   },
